@@ -6,18 +6,19 @@ const router = express.Router();
 //signup
 router.post('/signup', async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-    const user = new User(req.body);
     try {
+        const user = new User(req.body);
+
         await user.save();
         const token = await user.generateAuthToken();
-        res.status(201).json(
+       return res.status(201).json(
             {
                 data: user,
                 code: 200,
                 message: "Successfully created"
             });
     } catch (error) {
-        res.status(400).json(
+       return res.status(400).json(
             {
                 data: null,
                 code: 400,
@@ -32,12 +33,12 @@ router.post('/login', async (req, res) => {
 
     res.set('Access-Control-Allow-Origin', '*');
     try {
-        let { email, password } = req.body;
-        if (!email) {
+        let { username, password } = req.body;
+        if (!username) {
             return res.status(400).json(
                 {
                     code: 400,
-                    message: "Email not given"
+                    message: "username not given"
                 });
         }
         if (!password) {
@@ -47,7 +48,7 @@ router.post('/login', async (req, res) => {
                     message: "Password not given"
                 });
         }
-        const user = await User.findByCredentials(req.body.email, req.body.password)
+        const user = await User.findByCredentials(req.body.username, req.body.password)
         if (!user) {
             return res.status(400).json(
                 {
@@ -63,7 +64,7 @@ router.post('/login', async (req, res) => {
                 message: "Successfully logged in"
             });
     } catch (error) {
-        res.status(400).json(
+         return res.status(400).json(
             {
                 data: null,
                 code: 400,
@@ -82,14 +83,14 @@ router.post('/logout', Auth, async (req, res) => {
             return token.token !== req.token
         });
         await req.user.save();
-        res.status(200).json(
+         return res.status(200).json(
             {
                 data: null,
                 code: 200,
                 message: "Logged out"
             });
     } catch (error) {
-        res.status(400).json(
+        return res.status(400).json(
             {
                 data: null,
                 code: 400,
@@ -105,14 +106,14 @@ router.post('/logoutAll', Auth, async (req, res) => {
     try {
         req.user.tokens = [];
         await req.user.save();
-        res.status(200).json(
+        return res.status(200).json(
             {
                 data: null,
                 code: 200,
                 message: "Logged out from all devices"
             });
     } catch (error) {
-        res.status(400).json(
+        return res.status(400).json(
             {
                 data: null,
                 code: 400,

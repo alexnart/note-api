@@ -5,55 +5,22 @@ const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
 
-    firstname: {
-        type: String,
-        required: true
-    },
-    lastname: {
-        type: String,
-        required: true
-    },
-    dateOfBirth: {
-        type: String,
-        required: true
-    },
-    profilePhoto: {
-        type: String
-    },
-    location: {
-        type: String
-    },
-    email: {
+    username: {
         type: String,
         required: true,
-        unique: true,
-        lowercase: true,
-        validate(value) {
-            if (!validator.isEmail(value)) {
-                throw new Error("Email is inbalid")
-            }
-        }
+        trim: true,
+        lowercase: true
     },
     password: {
         type: String,
         required: true,
-        minLength: 8,
-        trim: true,
         validate(value) {
-            if (value.toLowerCase().includes('password')) {
-                throw new Error("password musn\'t contain 'password'");
+            if (value.length <= 5) {
+                throw new Error("password must be 5 characters");
             }
         }
     },
-    phoneNumber: {
-        type: String,
-        trim: true,
-        validate(value) {
-            if (value.length != 10) {
-                throw new Error("phone number must be 10 digits");
-            }
-        }
-    },
+  
     tokens: [{
         token: {
             type: String,
@@ -81,8 +48,8 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-userSchema.statics.findByCredentials = async (email, password) => {
-    const user = await User.findOne({ email }); 
+userSchema.statics.findByCredentials = async (username, password) => {
+    const user = await User.findOne({ username }); 
     if(!user) {
         throw new Error('Unable to log in')
     }

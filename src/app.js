@@ -11,6 +11,10 @@ const connectionsRoutes = require('../routes/connections');
 const welcomeRoute = require('../routes/welcome');
 const commentsRoute = require('../routes/comments');
 const chatRoute = require('../routes/chat');
+const noteRoute = require('../routes/note');
+
+
+
 
 // Setup db and environment
 require('../db/mongoose');
@@ -33,12 +37,8 @@ app.use(cors({
 // Setup route paths
 app.use('/', welcomeRoute);
 app.use('/api/auth', userRoutes);
-app.use('/api/comments', commentsRoute);
-app.use('/api/likes', likesRoutes);
-app.use('/api/dislikes', dislikesRoutes);
-app.use('/api/connections', connectionsRoutes);
-app.use('/api/posts', postsRoutes);
-app.use('/api/chat', chatRoute);
+app.use('/api/note', noteRoute);
+
 
 
 // Start api and listen on port

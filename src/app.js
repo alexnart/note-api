@@ -3,14 +3,8 @@ const express = require("express");
 const cors = require('cors');
 
 // Create Routes
-const postsRoutes = require('../routes/posts');
 const userRoutes = require('../routes/users');
-const likesRoutes = require('../routes/likes');
-const dislikesRoutes = require('../routes/dislikes');
-const connectionsRoutes = require('../routes/connections');
 const welcomeRoute = require('../routes/welcome');
-const commentsRoute = require('../routes/comments');
-const chatRoute = require('../routes/chat');
 const noteRoute = require('../routes/note');
 
 
